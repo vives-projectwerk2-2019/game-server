@@ -1,0 +1,17 @@
+{
+    "tiles": [
+        {"name": "water", "link": "assets/Tiles/waterTile.png"},
+        {"name": "grass", "link": "assets/Tiles/grassTile.png"},
+        {"name": "mountain", "link": "assets/Tiles/mountainTile.png"},
+        {"name": "swamp", "link": "assets/Tiles/swampTile.png"}
+    ],
+    "size": {
+        "width": 22,
+        "length": 17
+    },
+    "offset": {
+        "x": 10,
+        "y": 10
+    },
+    "tileSize": 40
+}
