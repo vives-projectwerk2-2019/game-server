@@ -2,7 +2,7 @@
     "settings": {
         "port": 1883
     },
-    "broker": "mqtt://192.168.1.101",
+    "broker": "mqtt://<YOUR_IP_ADDRESS>",
     "topics": {
         "main": "game",
         "serverLogs": "/log",
