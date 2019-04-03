@@ -23,6 +23,17 @@ class Mqtt {
             this.messageHandler(topic, message.toString());
         });
     }
+
+    end () {
+        if (this.connected) {
+            client.end();
+        }
+    }
+
+    send (topicName, message) {
+        this.client.publish(topicName, message);
+    }
+
 }
 
 module.exports = Mqtt;
