@@ -13,6 +13,20 @@ class TurnHandler {
         this.turn = startTurn;
         this.startTurn();
     }
+
+    startTurn() {
+        this.timer = new Stopwatch(this.turnLength, {refreshRateMS: this.heartbeat});  //stopping or reseting timer is to buggy
+        this.timer.start();
+        this.timer.onTime( (time) => this.onHeartbeat() )
+                  .onDone( () => this.endTurn() );
+    }
+      
+    endTurn() {
+        this.mqtt.log("Turn " + this.turn + " is over");
+        this.turn++;
+        this.timer.stop();
+        this.startTurn();
+    }
 }
 
 module.exports = TurnHandler;
