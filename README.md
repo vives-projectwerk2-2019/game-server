@@ -3,7 +3,7 @@
 Server of the BUG game.
 
 ## layout of server
-![alt text](images/server_layout.jpg "Server layout")
+![server layout](images/server_layout.png "Server layout")
 
 ## running the server
 
@@ -36,4 +36,4 @@ to imitate a potential client you will have to send a message to `game/` in the 
 }
 ```
 
-the movement input of the first packet will be ignored while the server is adding you as a new player.
+The movement input of the first packet will be ignored while the server is adding you as a new player.
