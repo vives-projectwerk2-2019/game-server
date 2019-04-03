@@ -46,6 +46,11 @@ class Mqtt {
         });
     }
 
+    setupClientConnection(clientName) {
+        this.subscribeTopic(this.mainTopic + this.topics.clients + clientName);
+        this.log("established private connection with " + clientName);
+    }
+
     send (topicName, message) {
         this.client.publish(topicName, message);
     }
