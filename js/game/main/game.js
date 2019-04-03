@@ -12,6 +12,11 @@ class Game {
         this.playerList = new PlayerList();
         this.turnHandler = new TurnHandler( gameConfiguration, () => this.run(), client.mqtt );
     }
+
+    //expects string color and object spawnPosition {x: int, y: int} returns an object tank
+    createTank (color, spawnPosition) {
+        return new Tank(this.map, spawnPosition.x, spawnPosition.y, 40, null); //read size from config file and occupy addons with something usefull
+    }
 }
 
 module.exports = Game;
