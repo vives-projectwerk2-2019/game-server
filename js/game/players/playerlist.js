@@ -26,6 +26,14 @@ class PlayerList {
         });
         return output;
     }
+
+    json() {
+        let output = { "players" : [] };
+        this.players.forEach(player => {
+            output.players.push(player.json());
+        });
+        return output;
+    }
 }
 
 module.exports = PlayerList;
