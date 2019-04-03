@@ -33,6 +33,15 @@ class UserInputHandler {
             this.mqtt.log("the given input was invalid");
         }
     }
+
+    handleInput(player, input) {
+        this.game.client.mqtt.log("the player " + player.name + " wants his tank to move to the " + input.Player.movement);
+        if (player.tank[input.Player.movement] && typeof player.tank[input.Player.movement] == "function") {
+            player.tank[input.Player.movement]();
+        } else {
+            this.mqtt.log("this movement type is invalid");
+        }
+    }
 }
 
 module.exports = UserInputHandler;
