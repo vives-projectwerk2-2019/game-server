@@ -6,3 +6,8 @@ const fs = require('fs'); //file system
 exports.readFile = (path) => {
     return fs.readFileSync(path);
 };
+
+//expects valid json string jsonString, returns a json object
+exports.getJson = (jsonString) => {
+    return JSON.parse(jsonString);
+};
