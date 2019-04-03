@@ -115,6 +115,16 @@ class Tank extends HexMover {
         break;
     }
   }
+
+  //gets replicated to the client
+  json() {
+    return {
+      "color": this.color,
+      "addons": this.addons,
+      "rotation": this.currentRotation,
+      "position" : this.currentTile.position
+    };
+  }
 }
 
 module.exports = Tank;
