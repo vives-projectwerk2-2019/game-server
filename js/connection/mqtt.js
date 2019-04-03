@@ -30,6 +30,22 @@ class Mqtt {
         }
     }
 
+    subscribeTopic (topicName) {
+        this.client.subscribe(topicName, (err) => {
+            if(!err){
+                this.send(topicName, 'The server is listening to ' + topicName);
+            }
+        });
+    }
+
+    unsubscribeTopic (topicName) {
+        this.client.unsubscribe(topicName, (err) => {
+            if(!err){
+                this.send(topicName, 'topic' + topicName + 'was removed');
+            }
+        });
+    }
+
     send (topicName, message) {
         this.client.publish(topicName, message);
     }
