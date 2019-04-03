@@ -27,6 +27,11 @@ class TurnHandler {
         this.timer.stop();
         this.startTurn();
     }
+
+    //returns the time left untill the round auto ends, can accept int resolution (a number between 0 and 3) this refers to the ammount of numbers after the point
+    getTimeLeft(resolution = 0) {
+        return Math.floor(this.timer.ms / Math.pow(10, 3 - resolution))/ Math.pow(10, resolution);
+    }
 }
 
 module.exports = TurnHandler;
