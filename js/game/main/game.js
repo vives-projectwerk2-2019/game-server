@@ -17,6 +17,11 @@ class Game {
     createTank (color, spawnPosition) {
         return new Tank(this.map, spawnPosition.x, spawnPosition.y, 40, null); //read size from config file and occupy addons with something usefull
     }
+    run () {
+        //console.log(this.turnHandler.getTimeLeft(1));
+        //console.log(JSON.stringify(this.playerList.json()));
+        this.client.update(JSON.stringify(this.playerList.json()));
+    }
 }
 
 module.exports = Game;
