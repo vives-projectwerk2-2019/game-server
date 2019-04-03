@@ -9,6 +9,19 @@ class Mqtt {
         this.mainTopic = configuration.topics.main;
         this.messageHandler = messageHandler;
         this.connected = false;
+
+        this.client.on('connect', () => {
+            this.client.subscribe(this.mainTopic, (err) => {
+                if (!err) {
+                    this.subscribeTopic(this.mainTopic);
+                }
+            });
+        });
+    
+        this.client.on('message', (topic, message) => {
+            // message is Buffer
+            this.messageHandler(topic, message.toString());
+        });
     }
 }
 
