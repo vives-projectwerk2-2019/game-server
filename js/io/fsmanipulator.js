@@ -11,3 +11,9 @@ exports.readFile = (path) => {
 exports.getJson = (jsonString) => {
     return JSON.parse(jsonString);
 };
+
+//expects a string path, returns the json object inside the specified json file
+exports.readJson = (path) => {
+    let content = exports.readFile(path);
+    return exports.getJson(content);
+};
