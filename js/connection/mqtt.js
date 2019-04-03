@@ -55,6 +55,18 @@ class Mqtt {
         this.client.publish(topicName, message);
     }
 
+    log (message) {
+        this.send(this.mainTopic + this.topics.serverLogs, message);
+    }
+
+    replicate (message) {
+        this.send(this.mainTopic + this.topics.replicated, message);
+    }
+
+    sendToClient(clientName, message) {
+        this.send(this.mainTopic + this.topics.clients + clientName, message);
+    }
+
 }
 
 module.exports = Mqtt;
