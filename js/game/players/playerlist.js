@@ -15,6 +15,17 @@ class PlayerList {
             console.log("the specified name is already in use");
         }
     }
+
+    //expects string name, will return the player with this specified name or null
+    getPlayer(name){
+        let output = null;
+        this.players.forEach(player => {
+            if (player.name == name) {
+                output = player;
+            }
+        });
+        return output;
+    }
 }
 
 module.exports = PlayerList;
