@@ -26,7 +26,7 @@ class UserInputHandler {
         if (player) {
           this.handleInput(player, input);
         } else {
-          this.onNewPlayerConnected(message);
+          this.onNewPlayerConnected(input);
         }
       }
     } else if (topic == this.mqtt.topics.replicated) {

@@ -1,12 +1,12 @@
 {
-    "settings": {
-        "port": 1884
-    },
-    "broker": "mqtt://labict.be",
-    "topics": {
-        "main": "game2",
-        "serverLogs": "/log",
-        "replicated": "/replicated",
-        "clients": "/clients/"
-    }
+  "settings": {
+    "port": 1884
+  },
+  "broker": "mqtt://labict.be",
+  "topics": {
+    "main": "game3",
+    "serverLogs": "/log",
+    "replicated": "/replicated",
+    "clients": "/clients/"
+  }
 }

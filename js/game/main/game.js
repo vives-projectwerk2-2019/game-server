@@ -40,20 +40,19 @@ class Game {
       let tankName = this.dataInput.Player.username;
       allTanks.push(this.tankName);
       return new Tank(
-        this.selectTankColor(),
-        this,
         this.map,
         this.spawnTileX(),
         this.spawnTileY(),
         45,
-        tankName
+        this.selectTankColor(),
+        this.dataInput.Controller.addons
       );
     }
   }
   //expects string color and object spawnPosition {x: int, y: int} returns an object tank
-  createTank(color, spawnPosition) {
-    return new Tank(this.map, spawnPosition.x, spawnPosition.y, 40, null); //read size from config file and occupy addons with something usefull
-  }
+  //   createTank(color, spawnPosition) {
+  //     return new Tank(this.map, spawnPosition.x, spawnPosition.y, 40, null); //read size from config file and occupy addons with something usefull
+  //   }
 
   run() {
     //console.log(this.turnHandler.getTimeLeft(1));
