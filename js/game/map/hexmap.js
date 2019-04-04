@@ -26,7 +26,7 @@ class HexMap {
         let tileWidth = Math.sqrt(3) * (this.tileSize / 2);
         let tileHeight = ( 2 * (this.tileSize / 2) );
         let map = [];
-        console.log(this.width)
+        // console.log(this.width)
         for (let xIndex = 0; xIndex < this.width; xIndex++) {
             map[xIndex] = [];
             for (let yIndex = 0; yIndex < this.length; yIndex++) {
