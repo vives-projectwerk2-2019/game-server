@@ -13,53 +13,49 @@ class tankMechanics {
   moveTank(receivedMessage) {
     var dataInput = receivedMessage;
 
-    //console.log(this);
     switch (dataInput.Player.movement) {
       case "left":
-        //console.log("move left");
         this.tankblack.turnLeft();
         break;
       case "right":
-        //console.log("move right");
         this.tankblack.turnRight();
         break;
       case "forward":
-        //console.log("move forward");
         this.tankblack.forward();
         break;
       case "backward":
-        //console.log("move backward");
         this.tankblack.backward();
         break;
       default:
-        //console.log("idle");
+        console.log("idle");
         break;
     }
   }
+
   tankAction(receivedMessage) {
     var dataInput = receivedMessage;
 
     switch (dataInput.Player.action) {
       case "A":
-        this.dealDamage(this.tankblack, "gatling gun", allTanks);
+        this.dealDamage(this.tank, "gatling gun", allTanks);
         break;
       case "B":
         i = 1;
         this.addonList = this.dataInput.Controller.addons;
-        this.tankblack.useAddon(this.addonList[i], i);
-        this.tankblack.addonUses[i]++;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
         break;
       case "X":
         i = 2;
         this.addonList = this.dataInput.Controller.addons;
-        this.tankblack.useAddon(this.addonList[i], i);
-        this.tankblack.addonUses[i]++;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
         break;
       case "Y":
         i = 3;
         this.addonList = this.dataInput.Controller.addons;
-        this.tankblack.useAddon(this.addonList[i], i);
-        this.tankblack.addonUses[i]++;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
         break;
       default:
         //console.log("no key pressed");
