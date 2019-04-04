@@ -1,37 +1,4 @@
 class tankMechanics {
-  addon(i) {
-    this.i = i;
-    this.addonList = this.tankblack.addons;
-    var firedWeapon = "";
-    firedWeapon = this.tankblack.useAddon(this.addonList[i], i);
-    //console.log(firedWeapon);
-    if (firedWeapon != null) {
-      this.dealDamage(this.tankblack, firedWeapon, allTanks);
-    }
-    this.tankblack.addonUses[i]++;
-  }
-  moveTank(receivedMessage) {
-    var dataInput = receivedMessage;
-
-    switch (dataInput.Player.movement) {
-      case "left":
-        this.tankblack.turnLeft();
-        break;
-      case "right":
-        this.tankblack.turnRight();
-        break;
-      case "forward":
-        this.tankblack.forward();
-        break;
-      case "backward":
-        this.tankblack.backward();
-        break;
-      default:
-        console.log("idle");
-        break;
-    }
-  }
-
   tankAction(receivedMessage) {
     var dataInput = receivedMessage;
 
