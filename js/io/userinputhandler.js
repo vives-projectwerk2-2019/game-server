@@ -23,8 +23,12 @@ class UserInputHandler {
       if (input.Player) {
         //console.log(input);
         let player = this.game.playerList.getPlayer(input.Player.username);
-        if (player) {
-          this.handleInput(player, input);
+        if (!this.dataInput.Player.joined) {
+          if (player) {
+            this.handleInput(player, input);
+          } else {
+            this.mqtt.log("the player " + input.Player + " does not exist");
+          }
         } else {
           this.onNewPlayerConnected(input);
         }
