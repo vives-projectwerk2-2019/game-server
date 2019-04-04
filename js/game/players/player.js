@@ -4,6 +4,7 @@ class Player {
     constructor(name, tank) {
         this.name = name;
         this.tank = tank;
+        this.moved = false;
     }
 
     //gets replicated to client

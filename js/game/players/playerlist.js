@@ -28,9 +28,9 @@ class PlayerList {
     }
 
     json() {
-        let output = { "players" : [] };
+        let output = []
         this.players.forEach(player => {
-            output.players.push(player.json());
+            output.push(player.json());
         });
         return output;
     }

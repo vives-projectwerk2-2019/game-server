@@ -25,7 +25,10 @@ class Game {
     }
 
     onTurnEnd() {
-        this.client.update(JSON.stringify(this.playerList.json()));
+        this.client.update(JSON.stringify({turn: this.turnHandler.turn, players: this.playerList.json()}));
+        this.playerList.players.forEach(player => {
+            player.moved = false;
+        });
     }
 }
 
