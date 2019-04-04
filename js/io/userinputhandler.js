@@ -48,7 +48,7 @@ class UserInputHandler {
         let spawnPosition = {"x": Math.floor(Math.random() * this.game.map.width), "y": Math.floor(Math.random() * this.game.map.length)};
         this.game.playerList.addPlayer(name, this.game.createTank("green", spawnPosition));
         this.mqtt.setupClientConnection(name);
-        this.mqtt.sendToClient(name, JSON.stringify({ "map": this.game.map.body}));
+        this.mqtt.sendToClient(name, JSON.stringify({ "map": this.game.map.jsonMap}));
     }
 }
 

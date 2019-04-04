@@ -4,11 +4,13 @@ var Stopwatch = require("timer-stopwatch");
 
 class TurnHandler {
     //onHeartbeat: a method that gets called on every update
-    constructor (configuration, onHeartbeat, mqtt,startTurn = 0) {      //TODO: remove mqtt when troubleshooting is over
+    //onTurnEnd: a method that gets called onevery end of the turn
+    constructor (configuration, onHeartbeat, onTurnEnd, mqtt,startTurn = 0) {
         this.mqtt = mqtt;
         this.heartbeat = configuration.heartbeat;
         this.turnLength = configuration.turnLength * 1000;
         this.onHeartbeat = onHeartbeat;
+        this.onTurnEnd = onTurnEnd;
         this.timer = null;
         this.turn = startTurn;
         this.startTurn();
@@ -25,6 +27,7 @@ class TurnHandler {
         this.mqtt.log("Turn " + this.turn + " is over");
         this.turn++;
         this.timer.stop();
+        this.onTurnEnd();
         this.startTurn();
     }
 

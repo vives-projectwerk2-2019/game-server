@@ -1,4 +1,4 @@
 {
     "turnLength": 5,
-    "heartbeat": 100
+    "heartbeat": 1000
 }

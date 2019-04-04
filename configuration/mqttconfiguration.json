@@ -1,10 +1,10 @@
 {
     "settings": {
-        "port": 1883
+        "port": 1884
     },
-    "broker": "mqtt://<YOUR_IP_ADDRESS>",
+    "broker": "mqtt://labict.be",
     "topics": {
-        "main": "game",
+        "main": "game2",
         "serverLogs": "/log",
         "replicated": "/replicated",
         "clients": "/clients/"

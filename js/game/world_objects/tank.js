@@ -118,11 +118,12 @@ class Tank extends HexMover {
 
   //gets replicated to the client
   json() {
+    console.log("x: "+ this.currentPosition.x + " y: " + this.currentPosition.y)
     return {
       "color": this.color,
       "addons": this.addons,
       "rotation": this.currentRotation,
-      "position" : this.currentTile.position
+      "position" : {x: this.currentPosition.x, y: this.currentPosition.y}
     };
   }
 }
