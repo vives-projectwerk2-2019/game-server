@@ -24,6 +24,7 @@ class Game {
   constructor(gameConfiguration, mapConfiguration, jsonMap, client) {
     this.client = client;
     this.map = new HexMap(mapConfiguration, jsonMap);
+    this.setSpawnTiles();
     this.playerList = new PlayerList();
     this.turnHandler = new TurnHandler(
       gameConfiguration,
@@ -35,19 +36,17 @@ class Game {
   createTank(receivedMessage) {
     this.dataInput = receivedMessage;
 
-    if (!this.dataInput.Player.joined) {
-      tankValues++;
-      let tankName = this.dataInput.Player.username;
-      allTanks.push(this.tankName);
-      return new Tank(
-        this.map,
-        this.spawnTileX(),
-        this.spawnTileY(),
-        45,
-        this.selectTankColor(),
-        this.dataInput.Controller.addons
-      );
-    }
+    tankValues++;
+    let tankName = this.dataInput.Player.username;
+    allTanks.push(tankName);
+    return new Tank(
+      this.map,
+      this.spawnTileX(),
+      this.spawnTileY(),
+      45,
+      this.selectTankColor(),
+      this.dataInput.Controller.addons
+    );
   }
   //expects string color and object spawnPosition {x: int, y: int} returns an object tank
   //   createTank(color, spawnPosition) {
@@ -87,9 +86,12 @@ class Game {
       for (let y = 0; y < element.length; y++) {
         const tileValue = element[y];
         if (tileValue == 4) {
+          //console.log(x);
+          //console.log(y);
           spawnTiles.push([x, y]);
         }
       }
+      //console.log(spawnTiles);
     }
   }
   spawnTileX() {
