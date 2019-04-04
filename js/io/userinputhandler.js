@@ -23,14 +23,16 @@ class UserInputHandler {
       if (input.Player) {
         //console.log(input);
         let player = this.game.playerList.getPlayer(input.Player.username);
-        if (!this.dataInput.Player.joined) {
+        if (!input.Player.joined) {
           if (player) {
             this.handleInput(player, input);
           } else {
             this.mqtt.log("the player " + input.Player + " does not exist");
           }
-        } else {
+        } else if (!player) {
           this.onNewPlayerConnected(input);
+        } else {
+          this.mqtt.log("a new player " + input.Player.username + " wants to connect, but his name is already in use");
         }
       }
     } else if (topic == this.mqtt.topics.replicated) {
