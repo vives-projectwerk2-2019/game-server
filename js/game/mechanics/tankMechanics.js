@@ -1,4 +1,71 @@
 class tankMechanics {
+  addon(i) {
+    this.i = i;
+    this.addonList = this.tankblack.addons;
+    var firedWeapon = "";
+    firedWeapon = this.tankblack.useAddon(this.addonList[i], i);
+    //console.log(firedWeapon);
+    if (firedWeapon != null) {
+      this.dealDamage(this.tankblack, firedWeapon, allTanks);
+    }
+    this.tankblack.addonUses[i]++;
+  }
+  moveTank(receivedMessage) {
+    var dataInput = receivedMessage;
+
+    //console.log(this);
+    switch (dataInput.Player.movement) {
+      case "left":
+        //console.log("move left");
+        this.tankblack.turnLeft();
+        break;
+      case "right":
+        //console.log("move right");
+        this.tankblack.turnRight();
+        break;
+      case "forward":
+        //console.log("move forward");
+        this.tankblack.forward();
+        break;
+      case "backward":
+        //console.log("move backward");
+        this.tankblack.backward();
+        break;
+      default:
+        //console.log("idle");
+        break;
+    }
+  }
+  tankAction(receivedMessage) {
+    var dataInput = receivedMessage;
+
+    switch (dataInput.Player.action) {
+      case "A":
+        this.dealDamage(this.tankblack, "gatling gun", allTanks);
+        break;
+      case "B":
+        i = 1;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tankblack.useAddon(this.addonList[i], i);
+        this.tankblack.addonUses[i]++;
+        break;
+      case "X":
+        i = 2;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tankblack.useAddon(this.addonList[i], i);
+        this.tankblack.addonUses[i]++;
+        break;
+      case "Y":
+        i = 3;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tankblack.useAddon(this.addonList[i], i);
+        this.tankblack.addonUses[i]++;
+        break;
+      default:
+        //console.log("no key pressed");
+        break;
+    }
+  }
   dealDamage(damageDealer, firedWeapon, allTanks) {
     this.firedWeapon = firedWeapon;
     this.allTanks = allTanks;
