@@ -2,7 +2,7 @@
   "settings": {
     "port": 1884
   },
-  "broker": "mqtt://broker",
+  "broker": "mqtt://labict.be",
   "topics": {
     "main": "game3",
     "serverLogs": "/log",

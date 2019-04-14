@@ -1,10 +1,12 @@
 /*jshint esversion: 6 */
-const HexMover = require(__lib + '/game/world_objects/hexmover.js');
+const HexMover = require(__lib + "/game/world_objects/hexmover.js");
 
 class Tank extends HexMover {
-  constructor(map, x, y, size, color, addons) {
+  constructor(map, x, y, size, color, addons, username) {
     super(map, x, y, size);
     this.color = color;
+    this.addons = addons;
+    this.username = username;
   }
 
   printHealth() {
@@ -35,6 +37,46 @@ class Tank extends HexMover {
     this.tank.weapons.weaponName.push(name);
     this.tank.weapons.weaponDamage.push(damage);
     this.tank.weapons.weaponRange.push(range);
+  }
+  getCurrentTank(receivedMessage, allTanks) {
+    var dataInput = receivedMessage;
+    for (let index = 0; index < allTanks.length; index++) {
+      const element = allTanks[index];
+      if (dataInput.Player.username == element.username) {
+        return element;
+      }
+    }
+  }
+  tankAction(receivedMessage, allTanks) {
+    let dataInput = receivedMessage;
+    let damageDealer = this.getCurrentTank(dataInput, allTanks);
+    switch (dataInput.Player.action) {
+      case "A":
+        this.dealDamage(damageDealer, "gatling gun", allTanks);
+        console.log("A");
+        break;
+      case "B":
+        i = 1;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
+        break;
+      case "X":
+        i = 2;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
+        break;
+      case "Y":
+        i = 3;
+        this.addonList = this.dataInput.Controller.addons;
+        this.tank.useAddon(this.addonList[i], i);
+        this.tank.addonUses[i]++;
+        break;
+      default:
+        //console.log("no key pressed");
+        break;
+    }
   }
 
   useAddon(name, use, i) {
@@ -115,14 +157,125 @@ class Tank extends HexMover {
         break;
     }
   }
+  dealDamage(damageDealer, firedWeapon, allTanks) {
+    this.firedWeapon = firedWeapon;
+    this.allTanks = allTanks;
+    //console.log(damageDealer);
+    //console.log(firedWeapon);
+    //console.log(allTanks);
+    for (let index = 0; index < allTanks.length; index++) {
+      let damageTaker = allTanks[index];
+      let attLocation = damageDealer.currentTile.cubePosition;
+      let defLocation = damageTaker.currentTile.cubePosition;
+      let wepRange = damageDealer.weapons.weaponRange[0];
+      switch (damageDealer.currentRotation) {
+        case 1:
+          if (
+            attLocation.y == defLocation.y &&
+            attLocation.x < defLocation.x &&
+            attLocation.x + wepRange + 1 > defLocation.x
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
+        case 2:
+          if (
+            attLocation.z == defLocation.z &&
+            attLocation.x < defLocation.x &&
+            attLocation.x + wepRange + 1 > defLocation.x
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
+        case 3:
+          if (
+            attLocation.x == defLocation.x &&
+            attLocation.y > defLocation.y &&
+            attLocation.y + wepRange + 1 < defLocation.y
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
+        case 4:
+          if (
+            attLocation.y == defLocation.y &&
+            attLocation.x > defLocation.x &&
+            attLocation.x + wepRange + 1 < defLocation.x
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
+        case 5:
+          if (
+            attLocation.z == defLocation.z &&
+            attLocation.x > defLocation.x &&
+            attLocation.x + wepRange + 1 < defLocation.x
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
+        case 6:
+          if (
+            attLocation.x == defLocation.x &&
+            attLocation.y < defLocation.y &&
+            attLocation.y + wepRange + 1 > defLocation.y
+          ) {
+            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+          }
+          break;
 
+        default:
+          console.log(
+            "unknown rotation value: " + damageDealer.currentRotation
+          );
+          break;
+      }
+    }
+  }
+  takeDamage(damageDealer, firedWeapon, damageTaker) {
+    this.damageDealer = damageDealer;
+    var weapon = firedWeapon;
+    this.damageTaker = damageTaker;
+
+    for (let i = 0; i < damageDealer.weapons.weaponName.length; i++) {
+      //console.log(damageDealer.addonUses[0]);
+      if (
+        weapon == damageDealer.weapons.weaponName[i] &&
+        damageDealer.addonUses[i] < 1
+      ) {
+        console.log("yeet");
+        damageTaker.health =
+          damageTaker.health - damageDealer.weapons.weaponDamage[i];
+        console.log(damageTaker.health);
+        if (damageDealer.weapons.weaponName[i] != "gatling gun") {
+          damageDealer.addonUses[i]++;
+        }
+      }
+      if (damageTaker.health <= 0) {
+        console.log(damageTaker.username + " tank died");
+
+        if (damageTaker.isAlive) {
+          //   this.add
+          //     .sprite(
+          //       damageTaker.currentTile.position.x,
+          //       damageTaker.currentTile.position.y,
+          //       "explosion"
+          //     )
+          //     .play("explode");
+        }
+        // damageTaker.sprite.setTexture("destroyedTank");
+        damageTaker.isAlive = false;
+        damageTaker = null;
+      }
+    }
+  }
   //gets replicated to the client
   json() {
     return {
-      "color": this.color,
-      "addons": this.addons,
-      "rotation": this.currentRotation,
-      "position" : {x: this.currentPosition.x, y: this.currentPosition.y}
+      color: this.color,
+      addons: this.addons,
+      rotation: this.currentRotation,
+      position: { x: this.currentPosition.x, y: this.currentPosition.y }
     };
   }
 }

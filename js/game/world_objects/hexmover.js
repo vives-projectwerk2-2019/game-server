@@ -148,5 +148,4 @@ class HexMover {
   }
 }
 
-
 module.exports = HexMover;

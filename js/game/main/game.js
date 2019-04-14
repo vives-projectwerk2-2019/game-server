@@ -1,20 +1,5 @@
 /*jshint esversion: 6 */
-count = [0, 0, 0, 0, 0, 0, 0, 0];
-spawnTilesOccupiedX = [0, 0, 0, 0, 0, 0, 0, 0];
-spawnTilesOccupiedY = [0, 0, 0, 0, 0, 0, 0, 0];
-var spawnTiles = [];
-tankValues = 0;
-var colors = [
-  "tankblack",
-  "tankblue",
-  "tankcyan",
-  "tankgreen",
-  "tankgrey",
-  "tankpurple",
-  "tankred",
-  "tankyellow"
-];
-var allTanks = [null];
+
 const HexMap = require(__lib + "/game/map/hexmap.js");
 const PlayerList = require(__lib + "/game/players/playerlist.js");
 const Tank = require(__lib + "/game/world_objects/tank.js");
@@ -24,6 +9,22 @@ class Game {
   constructor(gameConfiguration, mapConfiguration, jsonMap, client) {
     this.client = client;
     this.map = new HexMap(mapConfiguration, jsonMap);
+    this.count = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTilesOccupiedX = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTilesOccupiedY = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTiles = [];
+    this.tankValues = 0;
+    this.colors = [
+      "tankblack",
+      "tankblue",
+      "tankcyan",
+      "tankgreen",
+      "tankgrey",
+      "tankpurple",
+      "tankred",
+      "tankyellow"
+    ];
+    this.allTanks = [];
     this.setSpawnTiles();
     this.playerList = new PlayerList();
     this.turnHandler = new TurnHandler(
@@ -36,17 +37,19 @@ class Game {
   createTank(receivedMessage) {
     this.dataInput = receivedMessage;
 
-    tankValues++;
+    this.tankValues++;
     let tankName = this.dataInput.Player.username;
-    allTanks.push(tankName);
-    return new Tank(
+    let newTank = new Tank(
       this.map,
       this.spawnTileX(),
       this.spawnTileY(),
       45,
       this.selectTankColor(),
-      this.dataInput.Controller.addons
+      this.dataInput.Controller.addons,
+      this.dataInput.Player.username
     );
+    this.allTanks.push(newTank);
+    return newTank;
   }
   //expects string color and object spawnPosition {x: int, y: int} returns an object tank
   //   createTank(color, spawnPosition) {
@@ -72,10 +75,10 @@ class Game {
   }
   selectTankColor() {
     for (let i = 0; i < 8; i++) {
-      const element = count[i];
+      const element = this.count[i];
       if (element == 0) {
-        count[i]++;
-        return colors[i];
+        this.count[i]++;
+        return this.colors[i];
       }
     }
   }
@@ -88,7 +91,7 @@ class Game {
         if (tileValue == 4) {
           //console.log(x);
           //console.log(y);
-          spawnTiles.push([x, y]);
+          this.spawnTiles.push([x, y]);
         }
       }
       //console.log(spawnTiles);
@@ -96,25 +99,25 @@ class Game {
   }
   spawnTileX() {
     //console.log(spawnTiles);
-    for (let i = 0; i < spawnTiles.length; i++) {
-      const element = spawnTiles[i];
-      if (!spawnTilesOccupiedX[i]) {
-        spawnTilesOccupiedX[i]++;
+    for (let i = 0; i < this.spawnTiles.length; i++) {
+      const element = this.spawnTiles[i];
+      if (!this.spawnTilesOccupiedX[i]) {
+        this.spawnTilesOccupiedX[i]++;
         //console.log(element);
         return element[0];
       }
     }
   }
   spawnTileY() {
-    for (let i = 0; i < spawnTiles.length; i++) {
-      const element = spawnTiles[i];
-      if (!spawnTilesOccupiedY[i]) {
-        spawnTilesOccupiedY[i]++;
+    for (let i = 0; i < this.spawnTiles.length; i++) {
+      const element = this.spawnTiles[i];
+      if (!this.spawnTilesOccupiedY[i]) {
+        this.spawnTilesOccupiedY[i]++;
         //console.log(element);
         return element[1];
       }
     }
   }
 }
-
+module.exports.variableName = "variableValue";
 module.exports = Game;

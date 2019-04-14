@@ -32,7 +32,11 @@ class UserInputHandler {
         } else if (!player) {
           this.onNewPlayerConnected(input);
         } else {
-          this.mqtt.log("a new player " + input.Player.username + " wants to connect, but his name is already in use");
+          this.mqtt.log(
+            "a new player " +
+              input.Player.username +
+              " wants to connect, but his name is already in use"
+          );
         }
       }
     } else if (topic == this.mqtt.topics.replicated) {
@@ -60,6 +64,7 @@ class UserInputHandler {
     } else {
       this.mqtt.log("this movement type is invalid");
     }
+    player.tank.tankAction(input, this.game.allTanks);
   }
 
   onNewPlayerConnected(message) {
