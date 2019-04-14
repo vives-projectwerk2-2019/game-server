@@ -160,9 +160,6 @@ class Tank extends HexMover {
   dealDamage(damageDealer, firedWeapon, allTanks) {
     this.firedWeapon = firedWeapon;
     this.allTanks = allTanks;
-    //console.log(damageDealer);
-    //console.log(firedWeapon);
-    //console.log(allTanks);
     for (let index = 0; index < allTanks.length; index++) {
       let damageTaker = allTanks[index];
       let attLocation = damageDealer.currentTile.cubePosition;
@@ -253,18 +250,6 @@ class Tank extends HexMover {
       }
       if (damageTaker.health <= 0) {
         console.log(damageTaker.username + " tank died");
-
-        if (damageTaker.isAlive) {
-          //   this.add
-          //     .sprite(
-          //       damageTaker.currentTile.position.x,
-          //       damageTaker.currentTile.position.y,
-          //       "explosion"
-          //     )
-          //     .play("explode");
-        }
-        // damageTaker.sprite.setTexture("destroyedTank");
-        damageTaker.isAlive = false;
         damageTaker = null;
       }
     }
@@ -275,7 +260,8 @@ class Tank extends HexMover {
       color: this.color,
       addons: this.addons,
       rotation: this.currentRotation,
-      position: { x: this.currentPosition.x, y: this.currentPosition.y }
+      position: { x: this.currentPosition.x, y: this.currentPosition.y },
+      health: this.health
     };
   }
 }
