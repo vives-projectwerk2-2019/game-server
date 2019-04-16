@@ -5,39 +5,45 @@ class Tank extends HexMover {
   constructor(map, x, y, size, color, addons, username) {
     super(map, x, y, size);
     this.color = color;
-    this.addons = addons;
+    this.addons = {
+      addonName: ["gatling gun"]
+    };
+    this.setAddons(addons);
     this.username = username;
-  }
-
-  printHealth() {
-    console.log(this.health);
-  }
-
-  setAddons(dataInput) {
-    this.dataInput = dataInput;
-    for (i = 0; i < this.addons.length; i++) {
-      if (dataInput.Controller.addons[i] !== null) {
-        this.addons[i] = dataInput.Controller.addons[i];
-      }
-    }
-    console.log(this.addons);
+    this.allWeapons = {
+      // base weapon always equiped
+      weaponName: ["gatling gun"],
+      weaponDamage: [4],
+      weaponRange: [20],
+      weaponUses: [0]
+    };
+    this.initWeapons();
   }
 
   addTankHealth(toAddHealth) {
-    this.tank.health = this.tank.health + toAddHealth;
-  }
-  addTankMovement(toAddMovement) {
-    this.tank.tankMovementRange = toAddMovement;
-  }
-  addTankArmor(toAddArmor) {
-    this.tank.armor = this.tank.armor + toAddArmor;
+    this.health = this.health + toAddHealth;
   }
 
-  addWeapon(name, damage, range) {
-    this.tank.weapons.weaponName.push(name);
-    this.tank.weapons.weaponDamage.push(damage);
-    this.tank.weapons.weaponRange.push(range);
+  addTankMovement(toAddMovement) {
+    this.tankMovementRange = toAddMovement;
   }
+
+  addTankArmor(toAddArmor) {
+    this.armor = this.armor + toAddArmor;
+  }
+  setAddons(addons) {
+    for (let index = 0; index < addons.length; index++) {
+      const name = addons[index];
+      this.addons.addonName.push(name);
+    }
+  }
+  addWeapon(name, damage, range, uses) {
+    this.allWeapons.weaponName.push(name);
+    this.allWeapons.weaponDamage.push(damage);
+    this.allWeapons.weaponRange.push(range);
+    this.allWeapons.weaponUses.push(uses);
+  }
+
   getCurrentTank(receivedMessage, allTanks) {
     var dataInput = receivedMessage;
     for (let index = 0; index < allTanks.length; index++) {
@@ -47,9 +53,11 @@ class Tank extends HexMover {
       }
     }
   }
+
   tankAction(receivedMessage, allTanks) {
     let dataInput = receivedMessage;
     let damageDealer = this.getCurrentTank(dataInput, allTanks);
+    let i;
     switch (dataInput.Player.action) {
       case "A":
         this.dealDamage(damageDealer, "gatling gun", allTanks);
@@ -57,21 +65,20 @@ class Tank extends HexMover {
         break;
       case "B":
         i = 1;
-        this.addonList = this.dataInput.Controller.addons;
-        this.tank.useAddon(this.addonList[i], i);
-        this.tank.addonUses[i]++;
+        console.log("B");
+
+        this.useAddon(this.addons.addonName[i], i, damageDealer, allTanks);
         break;
       case "X":
         i = 2;
-        this.addonList = this.dataInput.Controller.addons;
-        this.tank.useAddon(this.addonList[i], i);
-        this.tank.addonUses[i]++;
+        console.log("X");
+
+        this.useAddon(this.addons.addonName[i], i, damageDealer, allTanks);
         break;
       case "Y":
         i = 3;
-        this.addonList = this.dataInput.Controller.addons;
-        this.tank.useAddon(this.addonList[i], i);
-        this.tank.addonUses[i]++;
+        console.log("Y");
+        this.useAddon(this.addons.addonName[i], i, damageDealer, allTanks);
         break;
       default:
         //console.log("no key pressed");
@@ -79,92 +86,96 @@ class Tank extends HexMover {
     }
   }
 
-  useAddon(name, use, i) {
+  useConsumable(name, i) {
     this.name = name;
-    this.use = use;
 
     switch (name) {
       case "rocketEngine":
-        if (use && tank.addonUses[i] < 1) {
-          addTankMovement(3);
+        if (this.addonUses[i] < 1) {
+          this.addTankMovement(3);
+          this.addonUses[i]++;
         }
         break;
       case "amphibious":
-        tank.canEnterWater = true;
+        this.canEnterWater = true;
+        this.addonUses[i]++;
         break;
       case "harrier":
-        if (use && tank.addonUses[i] < 1) {
-          addTankMovement(6);
+        if (this.addonUses[i] < 1) {
+          this.addTankMovement(6);
+          this.addonUses[i]++;
         }
         break;
       case "adamantium":
-        if (use && tank.addonUses[i] < 1) {
-          addTankArmor(6);
-          addTankMovement(-1);
+        if (this.addonUses[i] < 1) {
+          this.addTankArmor(6);
+          this.addTankMovement(-1);
+          this.addonUses[i]++;
         }
         break;
       case "gravyShield":
-        if (use && tank.addonUses[i] < 2) {
-          addTankArmor(1); // moet per turn
+        if (this.addonUses[i] < 2) {
+          this.addTankArmor(1);
+          this.addonUses[i]++; // moet per turn
         }
         break;
       case "nanobots":
-        if (use && tank.addonUses[i] < 3) {
-          addTankHealth(2);
+        if (this.addonUses[i] < 3) {
+          this.addTankHealth(2);
+          this.addonUses[i]++;
         }
-        console.log("hp = " + tank.health);
-
         break;
       case "structuralStrengthening":
-        if (use && tank.addonUses[i] < 1) {
-          addTankHealth(5);
-        }
-        console.log("hp = " + tank.health);
-
-        break;
-      case "Flammenwerpfer":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("Flammenwerpfer", 8, 3);
-        }
-        break;
-      case "laser":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("laser", 3, 99);
-        }
-        break;
-      case "mines":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("mines", 10, 0);
-        }
-        break;
-      case "plasmaGun":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("plasmaGun", 6, 90);
-        }
-        break;
-      case "empBomb":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("empBomb", 0, 0);
-        }
-        break;
-      case "ram":
-        if (use && tank.addonUses[i] < 1) {
-          addWeapon("ram", 3, 0);
+        if (this.addonUses[i] < 1) {
+          this.addTankHealth(5);
+          this.addonUses[i]++;
         }
         break;
       default:
-        console.log("Contains addon that doesn't have any function.");
         break;
     }
   }
-  dealDamage(damageDealer, firedWeapon, allTanks) {
+
+  useAddon(addonName, i, damageDealer, allTanks) {
+    for (let x = 0; x < this.allWeapons.weaponName.length; x++) {
+      const wepName = this.allWeapons.weaponName[x];
+      const wepUses = this.allWeapons.weaponUses[x];
+
+      if (wepName == addonName && this.addonUses[i] < wepUses) {
+        this.dealDamage(damageDealer, addonName, allTanks, i);
+        this.addonUses[i]++;
+      } else {
+        this.useConsumable(addonName, i);
+      }
+    }
+  }
+
+  initWeapons() {
+    this.addWeapon("Flammenwerpfer", 8, 3, 1);
+    this.addWeapon("laser", 3, 99, 1);
+    this.addWeapon("mines", 10, 0, 1);
+    this.addWeapon("plasmaGun", 6, 90, 1);
+    this.addWeapon("empBomb", 0, 0, 1);
+  }
+
+  dealDamage(damageDealer, firedWeapon, allTanks, i) {
     this.firedWeapon = firedWeapon;
     this.allTanks = allTanks;
+    let wepRange;
+    let wepDamage;
+    // 1 , 2, 6 work others don't
+    for (let x = 0; x < this.allWeapons.weaponName.length; x++) {
+      const element = this.allWeapons.weaponName[x];
+      if (firedWeapon == element) {
+        wepRange = this.allWeapons.weaponRange[x];
+        wepDamage = this.allWeapons.weaponDamage[x];
+      }
+    }
     for (let index = 0; index < allTanks.length; index++) {
       let damageTaker = allTanks[index];
       let attLocation = damageDealer.currentTile.cubePosition;
       let defLocation = damageTaker.currentTile.cubePosition;
-      let wepRange = damageDealer.weapons.weaponRange[0];
+
       switch (damageDealer.currentRotation) {
         case 1:
           if (
@@ -172,7 +183,8 @@ class Tank extends HexMover {
             attLocation.x < defLocation.x &&
             attLocation.x + wepRange + 1 > defLocation.x
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("1");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
         case 2:
@@ -181,7 +193,8 @@ class Tank extends HexMover {
             attLocation.x < defLocation.x &&
             attLocation.x + wepRange + 1 > defLocation.x
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("2");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
         case 3:
@@ -190,7 +203,8 @@ class Tank extends HexMover {
             attLocation.y > defLocation.y &&
             attLocation.y + wepRange + 1 < defLocation.y
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("3");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
         case 4:
@@ -199,7 +213,8 @@ class Tank extends HexMover {
             attLocation.x > defLocation.x &&
             attLocation.x + wepRange + 1 < defLocation.x
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("4");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
         case 5:
@@ -208,7 +223,8 @@ class Tank extends HexMover {
             attLocation.x > defLocation.x &&
             attLocation.x + wepRange + 1 < defLocation.x
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("5");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
         case 6:
@@ -217,7 +233,8 @@ class Tank extends HexMover {
             attLocation.y < defLocation.y &&
             attLocation.y + wepRange + 1 > defLocation.y
           ) {
-            this.takeDamage(damageDealer, firedWeapon, damageTaker);
+            console.log("6");
+            this.takeDamage(damageDealer, wepDamage, damageTaker);
           }
           break;
 
@@ -229,30 +246,32 @@ class Tank extends HexMover {
       }
     }
   }
-  takeDamage(damageDealer, firedWeapon, damageTaker) {
+  takeDamage(damageDealer, wepDamage, damageTaker) {
     this.damageDealer = damageDealer;
-    var weapon = firedWeapon;
+    var wepDamage = wepDamage;
     this.damageTaker = damageTaker;
 
-    for (let i = 0; i < damageDealer.weapons.weaponName.length; i++) {
-      //console.log(damageDealer.addonUses[0]);
-      if (
-        weapon == damageDealer.weapons.weaponName[i] &&
-        damageDealer.addonUses[i] < 1
-      ) {
-        console.log("yeet");
-        damageTaker.health =
-          damageTaker.health - damageDealer.weapons.weaponDamage[i];
-        console.log(damageTaker.health);
-        if (damageDealer.weapons.weaponName[i] != "gatling gun") {
-          damageDealer.addonUses[i]++;
-        }
-      }
-      if (damageTaker.health <= 0) {
-        console.log(damageTaker.username + " tank died");
-        damageTaker = null;
-      }
+    damageTaker.health = damageTaker.health - wepDamage;
+    console.log(damageTaker.health);
+
+    // for (let i = 0; i < damageDealer.weapons.weaponName.length; i++) {
+    //   console.log(damageDealer.weapons.weaponName);
+    //   if (
+    //     weapon == damageDealer.weapons.weaponName[i] &&
+    //     damageDealer.addonUses[i] < 1
+    //   ) {
+    //     damageTaker.health =
+    //       damageTaker.health - damageDealer.weapons.weaponDamage[i];
+    //     console.log(damageTaker.health);
+    //     if (damageDealer.weapons.weaponName[i] != "gatling gun") {
+    //       damageDealer.addonUses[i]++;
+    //     }
+    //   }
+    if (damageTaker.health <= 0) {
+      console.log(damageTaker.username + " tank died");
+      damageTaker = null;
     }
+    // }
   }
   //gets replicated to the client
   json() {
