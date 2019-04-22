@@ -7,6 +7,18 @@ class AnimationEventList {
     constructor(){
         this.list = [];
     }
+
+    add(type, player, endTile = null){      //adds a new animation event to the list, endTile is optional in case a movement animation is requested
+        if (endTile) {
+            this.list.push( new MovementAnimationEvent(type, player, endTile) );
+        } else {
+            this.list.push( new AnimationEvent(type, player) );
+        }
+    }
+
+    clear(){        //clears all the animation events in the list
+        this.list = [];
+    }
 }
 
 module.exports = AnimationEventList;
