@@ -4,6 +4,7 @@ const HexMap = require(__lib + "/game/map/hexmap.js");
 const PlayerList = require(__lib + "/game/players/playerlist.js");
 const Tank = require(__lib + "/game/world_objects/tank.js");
 const TurnHandler = require(__lib + "/game/main/turnhandler.js");
+const AnimationEventList = require(__lib + "/game/animation/animationeventList.js");
 
 class Game {
   constructor(gameConfiguration, mapConfiguration, jsonMap, client) {
@@ -27,6 +28,7 @@ class Game {
     this.allTanks = [];
     this.setSpawnTiles();
     this.playerList = new PlayerList();
+    this.animationEventList = new AnimationEventList();
     this.turnHandler = new TurnHandler(
       gameConfiguration,
       () => this.run(),
@@ -66,13 +68,16 @@ class Game {
     this.client.update(
       JSON.stringify({
         turn: this.turnHandler.turn,
-        players: this.playerList.json()
+        players: this.playerList.json(),
+        animationEvents: this.animationEventList.json()
       })
     );
+    this.animationEventList.clear();
     this.playerList.players.forEach(player => {
       player.moved = false;
     });
   }
+
   selectTankColor() {
     for (let i = 0; i < 8; i++) {
       const element = this.count[i];
@@ -97,6 +102,7 @@ class Game {
       //console.log(spawnTiles);
     }
   }
+
   spawnTileX() {
     //console.log(spawnTiles);
     for (let i = 0; i < this.spawnTiles.length; i++) {
@@ -108,6 +114,7 @@ class Game {
       }
     }
   }
+
   spawnTileY() {
     for (let i = 0; i < this.spawnTiles.length; i++) {
       const element = this.spawnTiles[i];

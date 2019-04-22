@@ -57,6 +57,7 @@ class UserInputHandler {
             input.Player.movement
         );
         player.tank[input.Player.movement]();
+        this.game.animationEventList.add(input.Player.movement, player, player.tank.currentTile);
         player.moved = true;
       } else {
         this.mqtt.log(player.name + " is trying to move again !");
@@ -73,6 +74,8 @@ class UserInputHandler {
     this.mqtt.log(name + " has connected !");
     //let spawnPosition = {"x": Math.floor(Math.random() * this.game.map.width), "y": Math.floor(Math.random() * this.game.map.length)};
     this.game.playerList.addPlayer(name, this.game.createTank(input));
+    let player = this.game.playerList.getPlayer(input.Player.username);
+    this.game.animationEventList.add("spawnAnimation", player);
     this.mqtt.setupClientConnection(name);
     this.mqtt.sendToClient(
       name,

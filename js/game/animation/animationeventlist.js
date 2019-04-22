@@ -22,7 +22,6 @@ class AnimationEventList {
 
     json(){     //gets replicated to client
         let output = [];
-        console.log(this.list);
         this.list.forEach(event => {
             output.push(event.json());
         });
