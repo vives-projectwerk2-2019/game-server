@@ -19,6 +19,15 @@ class AnimationEventList {
     clear(){        //clears all the animation events in the list
         this.list = [];
     }
+
+    json(){     //gets replicated to client
+        let output = [];
+        console.log(this.list);
+        this.list.forEach(event => {
+            output.push(event.json());
+        });
+        return output;
+    }
 }
 
 module.exports = AnimationEventList;
