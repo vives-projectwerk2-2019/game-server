@@ -3,7 +3,7 @@
 Server of the BUG game.
 
 ## layout of server
-![server layout](images/server_layout.png "Server layout")
+![server layout](images/game_server.png "Server layout")
 
 ## running the server
 
