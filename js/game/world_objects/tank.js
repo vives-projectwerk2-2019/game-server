@@ -181,7 +181,7 @@ class Tank extends HexMover {
           if (
             attLocation.y == defLocation.y &&
             attLocation.x < defLocation.x &&
-            attLocation.x + wepRange + 1 > defLocation.x
+            attLocation.x + wepRange + 1 >= defLocation.x
           ) {
             console.log("1");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
@@ -191,7 +191,7 @@ class Tank extends HexMover {
           if (
             attLocation.z == defLocation.z &&
             attLocation.x < defLocation.x &&
-            attLocation.x + wepRange + 1 > defLocation.x
+            attLocation.x + wepRange + 1 >= defLocation.x
           ) {
             console.log("2");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
@@ -201,7 +201,7 @@ class Tank extends HexMover {
           if (
             attLocation.x == defLocation.x &&
             attLocation.y > defLocation.y &&
-            attLocation.y - wepRange - 1 > defLocation.y
+            attLocation.y - wepRange - 1 <= defLocation.y
           ) {
             console.log("3");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
@@ -211,7 +211,7 @@ class Tank extends HexMover {
           if (
             attLocation.y == defLocation.y &&
             attLocation.x > defLocation.x &&
-            attLocation.x - wepRange - 1 > defLocation.x
+            attLocation.x - wepRange - 1 <= defLocation.x
           ) {
             console.log("4");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
@@ -221,7 +221,7 @@ class Tank extends HexMover {
           if (
             attLocation.z == defLocation.z &&
             attLocation.x > defLocation.x &&
-            attLocation.x - wepRange - 1 > defLocation.x
+            attLocation.x - wepRange - 1 <= defLocation.x
           ) {
             console.log("5");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
@@ -231,7 +231,7 @@ class Tank extends HexMover {
           if (
             attLocation.x == defLocation.x &&
             attLocation.y < defLocation.y &&
-            attLocation.y + wepRange + 1 > defLocation.y
+            attLocation.y + wepRange + 1 >= defLocation.y
           ) {
             console.log("6");
             this.takeDamage(damageDealer, wepDamage, damageTaker);
