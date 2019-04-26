@@ -87,21 +87,21 @@ class Game {
   postScoreboard(tanks) {
     var bodyObj = {};
     bodyObj.title = "Scoreboard";
-    if (tanks.length == 1) {
+    if (tanks.length >= 1) {
       bodyObj.player1 = {
         active: true,
         shortName: tanks[0].username,
         bars: [tanks[0].health, tanks[0].armor]
       }
     }
-    if (tanks.length == 2) {
+    if (tanks.length >= 2) {
       bodyObj.player2 = {
         active: true,
         shortName: tanks[1].username,
         bars: [tanks[1].health, tanks[1].armor]
       };
     }
-    if (tanks.length == 3) {
+    if (tanks.length >= 3) {
       bodyObj.player3 = {
         active: true,
         shortName: tanks[2].username,
