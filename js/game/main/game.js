@@ -76,7 +76,12 @@ class Game {
     this.playerList.players.forEach(player => {
       player.moved = false;
     });
-    this.postScoreboard(this.allTanks);
+    try {
+      this.postScoreboard(this.allTanks);
+    }
+    catch(err) {
+       console.log("Could not connect to image display");
+    }
   }
 
   postScoreboard(tanks) {
@@ -113,7 +118,8 @@ class Game {
     var http = require('http');
 
     var options = {
-      url: 'http://172.16.101.167:8080',
+      host: '172.16.101.167',
+      port: '8080',
       path: '/',
       method: 'POST',
       headers: {
