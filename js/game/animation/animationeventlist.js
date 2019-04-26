@@ -9,11 +9,7 @@ class AnimationEventList {
     }
 
     add(type, player){      //adds a new animation event to the list, endTile is optional in case a movement animation is requested
-        if (endTile) {
-            this.list.push( new MovementAnimationEvent(type, player, endTile) );
-        } else {
-            this.list.push( new AnimationEvent(type, player) );
-        }
+        this.list.push( new AnimationEvent(type, player) );
     }
 
     addMovement(type, player, endTile){
@@ -21,7 +17,7 @@ class AnimationEventList {
     }
 
     addAction(type, player, target){
-        this.list.push( new ActionAnimationEvent(type, player, endTile) );
+        this.list.push( new ActionAnimationEvent(type, player, target) );
     }
 
     clear(){        //clears all the animation events in the list
