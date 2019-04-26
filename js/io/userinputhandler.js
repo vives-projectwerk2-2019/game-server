@@ -113,7 +113,15 @@ class UserInputHandler {
     } else {
       this.mqtt.log("this movement type is invalid");
     }
-    player.tank.tankAction(input, this.game.allTanks);
+    let returnData = player.tank.tankAction(input, this.game.allTanks);
+    console.log(returnData);
+    if (returnData != null) {
+      this.game.animationEventList.addAction(
+        returnData.firedWeapon,
+        returnData.damageDealer,
+        returnData.damageTaker
+      );
+    }
   }
 
   onNewPlayerConnected(message) {
