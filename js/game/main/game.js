@@ -85,8 +85,30 @@ class Game {
   }
 
   postScoreboard(tanks) {
-    var bodyObj = {};
-    bodyObj.title = "Scoreboard";
+    var bodyObj = {
+      title = "Scoreboard",
+      player1 = {
+        active: false,
+        shortName: "",
+        bars: [0,0]
+      },
+      player2 = {
+        active: false,
+        shortName: "",
+        bars: [0,0]
+      },
+      player3 = {
+        active: false,
+        shortName: "",
+        bars: [0,0]
+      },
+      player4 = {
+        active: false,
+        shortName: "",
+        bars: [0,0]
+      }
+    };
+
     if (tanks.length >= 1) {
       bodyObj.player1 = {
         active: true,
