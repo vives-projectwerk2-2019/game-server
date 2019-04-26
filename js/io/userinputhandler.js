@@ -5,6 +5,38 @@ class UserInputHandler {
     this.game = game;
     this.mqtt = mqtt;
     this.joinedPlayers = [];
+    this.addonhashes = [
+      "01a2f560d6df03bb",
+      "0140c29c8357f2ce",
+      "0155cf8199f0245b",
+      "016bc4464286f3fb",
+      "0148eef363dff533",
+      "0164a54798d7d27a",
+      "0136edcaaf285d1d",
+      "011d5ba90ce241e6",
+      "01a2eb344edc7c5a",
+      "01d9643e2bf10134",
+      "0100548e2b3038f5",
+      "01ff7ab8c2155e57",
+      "0122e76e424f7c79",
+      "01f94b5e5d4277b5"
+    ];
+    this.addonNames = [
+      "rocketEngine",
+      "amphibious",
+      "harrier",
+      "adamantium",
+      "gravyShield",
+      "nanobots",
+      "structuralStrengthening",
+      "Flammenwerpfer",
+      "laser",
+      "mines",
+      "plasmaGun",
+      "empBomb",
+      "ram",
+      "gatling gun"
+    ];
   }
 
   //expects a json string, will a json object if the given string is a valid json or else null
@@ -20,10 +52,21 @@ class UserInputHandler {
   //special case: if the given player name does not exist yet, will create this new player and will ignore this new players movement input for that instance
   onUserInput(topic, message) {
     let input = this.parseJson(message);
+
     if (input) {
       if (input.Player) {
         //console.log(input);
         let player = this.game.playerList.getPlayer(input.Player.username);
+        for (let index = 0; index < input.Controller.addons.length; index++) {
+          const currentaddon = input.Controller.addons[index];
+          for (let i = 0; i < this.addonhashes.length; i++) {
+            const element = this.addonhashes[i];
+
+            if (currentaddon == element) {
+              input.Controller.addons[index] = this.addonNames[i];
+            }
+          }
+        }
         if (this.joinedPlayers.includes(input.Player.username)) {
           if (player) {
             this.handleInput(player, input);
