@@ -4,7 +4,8 @@ const HexMap = require(__lib + "/game/map/hexmap.js");
 const PlayerList = require(__lib + "/game/players/playerlist.js");
 const Tank = require(__lib + "/game/world_objects/tank.js");
 const TurnHandler = require(__lib + "/game/main/turnhandler.js");
-const AnimationEventList = require(__lib + "/game/animation/animationeventList.js");
+const AnimationEventList = require(__lib +
+  "/game/animation/animationeventList.js");
 
 class Game {
   constructor(gameConfiguration, mapConfiguration, jsonMap, client) {
@@ -38,20 +39,21 @@ class Game {
   }
   createTank(receivedMessage) {
     this.dataInput = receivedMessage;
-
-    this.tankValues++;
-    let tankName = this.dataInput.Player.username;
-    let newTank = new Tank(
-      this.map,
-      this.spawnTileX(),
-      this.spawnTileY(),
-      45,
-      this.selectTankColor(),
-      this.dataInput.Controller.addons,
-      this.dataInput.Player.username
-    );
-    this.allTanks.push(newTank);
-    return newTank;
+    if (this.allTanks.length < 8) {
+      this.tankValues++;
+      let tankName = this.dataInput.Player.username;
+      let newTank = new Tank(
+        this.map,
+        this.spawnTileX(),
+        this.spawnTileY(),
+        45,
+        this.selectTankColor(),
+        this.dataInput.Controller.addons,
+        this.dataInput.Player.username
+      );
+      this.allTanks.push(newTank);
+      return newTank;
+    }
   }
   //expects string color and object spawnPosition {x: int, y: int} returns an object tank
   //   createTank(color, spawnPosition) {
@@ -78,9 +80,8 @@ class Game {
     });
     try {
       this.postScoreboard(this.allTanks);
-    }
-    catch(err) {
-       console.log("Could not connect to image display");
+    } catch (err) {
+      console.log("Could not connect to image display");
     }
   }
 
@@ -90,22 +91,22 @@ class Game {
       player1: {
         active: false,
         shortName: "",
-        bars: [0,0]
+        bars: [0, 0]
       },
       player2: {
         active: false,
         shortName: "",
-        bars: [0,0]
+        bars: [0, 0]
       },
       player3: {
         active: false,
         shortName: "",
-        bars: [0,0]
+        bars: [0, 0]
       },
       player4: {
         active: false,
         shortName: "",
-        bars: [0,0]
+        bars: [0, 0]
       }
     };
 
@@ -114,7 +115,7 @@ class Game {
         active: true,
         shortName: tanks[0].username,
         bars: [tanks[0].health, tanks[0].armor]
-      }
+      };
     }
     if (tanks.length >= 2) {
       bodyObj.player2 = {
@@ -137,16 +138,16 @@ class Game {
         bars: [tanks[3].health, tanks[3].armor]
       };
     }
-    var http = require('http');
+    var http = require("http");
 
     var options = {
-      host: '172.16.101.167',
-      port: '8080',
-      path: '/',
-      method: 'POST',
+      host: "172.16.101.167",
+      port: "8080",
+      path: "/",
+      method: "POST",
       headers: {
-        'User-Agent':   'Yeet/0.0.1',
-        'Content-Type': 'application/json'
+        "User-Agent": "Yeet/0.0.1",
+        "Content-Type": "application/json"
       }
     };
 
