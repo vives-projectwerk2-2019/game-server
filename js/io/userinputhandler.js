@@ -4,6 +4,7 @@ class UserInputHandler {
   constructor(game, mqtt) {
     this.game = game;
     this.mqtt = mqtt;
+    this.joinedPlayers = [];
   }
 
   //expects a json string, will a json object if the given string is a valid json or else null
@@ -23,7 +24,7 @@ class UserInputHandler {
       if (input.Player) {
         //console.log(input);
         let player = this.game.playerList.getPlayer(input.Player.username);
-        if (!input.Player.joined) {
+        if (this.joinedPlayers.includes(input.Player.username)) {
           if (player) {
             this.handleInput(player, input);
           } else {
@@ -57,7 +58,11 @@ class UserInputHandler {
             input.Player.movement
         );
         player.tank[input.Player.movement]();
-        this.game.animationEventList.add(input.Player.movement, player, player.tank.currentTile);
+        this.game.animationEventList.add(
+          input.Player.movement,
+          player,
+          player.tank.currentTile
+        );
         player.moved = true;
       } else {
         this.mqtt.log(player.name + " is trying to move again !");
@@ -74,6 +79,7 @@ class UserInputHandler {
     this.mqtt.log(name + " has connected !");
     //let spawnPosition = {"x": Math.floor(Math.random() * this.game.map.width), "y": Math.floor(Math.random() * this.game.map.length)};
     this.game.playerList.addPlayer(name, this.game.createTank(input));
+    this.joinedPlayers.push(input.Player.username);
     let player = this.game.playerList.getPlayer(input.Player.username);
     this.game.animationEventList.add("spawnAnimation", player);
     this.mqtt.setupClientConnection(name);
