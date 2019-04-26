@@ -86,23 +86,23 @@ class Game {
 
   postScoreboard(tanks) {
     var bodyObj = {
-      title = "Scoreboard",
-      player1 = {
+      title: "Scoreboard",
+      player1: {
         active: false,
         shortName: "",
         bars: [0,0]
       },
-      player2 = {
+      player2: {
         active: false,
         shortName: "",
         bars: [0,0]
       },
-      player3 = {
+      player3: {
         active: false,
         shortName: "",
         bars: [0,0]
       },
-      player4 = {
+      player4: {
         active: false,
         shortName: "",
         bars: [0,0]
