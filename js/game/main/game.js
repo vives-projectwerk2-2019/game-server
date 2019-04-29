@@ -5,7 +5,7 @@ const PlayerList = require(__lib + "/game/players/playerlist.js");
 const Tank = require(__lib + "/game/world_objects/tank.js");
 const TurnHandler = require(__lib + "/game/main/turnhandler.js");
 const AnimationEventList = require(__lib +
-  "/game/animation/animationeventList.js");
+  "/game/animation/animationeventlist.js");
 
 class Game {
   constructor(gameConfiguration, mapConfiguration, jsonMap, client) {
