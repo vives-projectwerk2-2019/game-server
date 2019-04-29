@@ -67,6 +67,10 @@ class Mqtt {
         this.send(this.mainTopic + this.topics.clients + clientName, message);
     }
 
+    sendToScoreboard(jsonString) {
+        this.send(this.topics.scoreboard, jsonString);
+    }
+
 }
 
 module.exports = Mqtt;

@@ -5,6 +5,7 @@
   "broker": "mqtt://labict.be",
   "topics": {
     "main": "game3",
+    "scoreboard": "scoreboard",
     "serverLogs": "/log",
     "replicated": "/replicated",
     "clients": "/clients/"

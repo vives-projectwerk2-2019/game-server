@@ -78,15 +78,13 @@ class Game {
     this.playerList.players.forEach(player => {
       player.moved = false;
     });
-    try {
-      this.postScoreboard(this.allTanks);
-    } catch (err) {
-      console.log("Could not connect to image display");
-    }
+    this.client.mqtt.sendToScoreboard(
+      this.scoreboardJsonString(this.allTanks)
+    );
   }
 
-  postScoreboard(tanks) {
-    var bodyObj = {
+  scoreboardJsonString(tanks) {
+    var payloadObj = {
       title: "Scoreboard",
       player1: {
         active: false,
@@ -111,49 +109,34 @@ class Game {
     };
 
     if (tanks.length >= 1) {
-      bodyObj.player1 = {
+      payloadObj.player1 = {
         active: true,
         shortName: tanks[0].username,
         bars: [tanks[0].health, tanks[0].armor]
       };
     }
     if (tanks.length >= 2) {
-      bodyObj.player2 = {
+      payloadObj.player2 = {
         active: true,
         shortName: tanks[1].username,
         bars: [tanks[1].health, tanks[1].armor]
       };
     }
     if (tanks.length >= 3) {
-      bodyObj.player3 = {
+      payloadObj.player3 = {
         active: true,
         shortName: tanks[2].username,
         bars: [tanks[2].health, tanks[2].armor]
       };
     }
     if (tanks.length >= 4) {
-      bodyObj.player4 = {
+      payloadObj.player4 = {
         active: true,
         shortName: tanks[3].username,
         bars: [tanks[3].health, tanks[3].armor]
       };
     }
-    var http = require("http");
-
-    var options = {
-      host: "172.16.101.167",
-      port: "8080",
-      path: "/",
-      method: "POST",
-      headers: {
-        "User-Agent": "Yeet/0.0.1",
-        "Content-Type": "application/json"
-      }
-    };
-
-    const req = http.request(options);
-    req.write(JSON.stringify(bodyObj));
-    req.end();
+    return JSON.stringify(payloadObj);
   }
 
   selectTankColor() {
