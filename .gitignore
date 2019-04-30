@@ -1,3 +1,4 @@
 game_server.xml
 package-lock.json
 node_modules/
+.env

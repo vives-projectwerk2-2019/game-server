@@ -41,8 +41,7 @@ The movement input of the first packet will be ignored while the server is addin
 
 ### configuring the environment variables
 
-To configure enviroment variables, replace or edit the .env file inside the root directory of the server. An example configuration could look like this:
-
+To configure enviroment variables, place a .env file inside the root directory of the server. An example configuration could look like this:
 ```
 #MQTT settings
 BROKER=mqtt://labict.be
