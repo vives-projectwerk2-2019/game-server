@@ -55,6 +55,14 @@ class Game {
       return newTank;
     }
   }
+
+  //resets the game by deleting all players, deleting all animation events and restarting the turns
+  reset() {
+    this.playerList.clear();
+    this.animationEventList.clear();
+    this.turnHandler.restart();
+  }
+
   //expects string color and object spawnPosition {x: int, y: int} returns an object tank
   //   createTank(color, spawnPosition) {
   //     return new Tank(this.map, spawnPosition.x, spawnPosition.y, 40, null); //read size from config file and occupy addons with something usefull

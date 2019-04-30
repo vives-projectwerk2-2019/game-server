@@ -22,6 +22,12 @@ class TurnHandler {
         this.timer.onTime( (time) => this.onHeartbeat() )
                   .onDone( () => this.endTurn() );
     }
+
+    restart() {
+        this.timer.stop()
+        this.turn = 0;
+        this.startTurn();
+    }
       
     endTurn() {
         this.mqtt.log("Turn " + this.turn + " is over");

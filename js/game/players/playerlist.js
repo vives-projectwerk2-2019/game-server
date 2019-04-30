@@ -7,6 +7,11 @@ class PlayerList {
         this.players = [];
     }
 
+    //removes all players, created to start a new round
+    clear(){
+        this.players = [];
+    }
+
     //will add a new player to the end of the list with specified string name and Tank tank
     addPlayer(name, tank){
         if (!this.getPlayer(name)){

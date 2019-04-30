@@ -7,6 +7,7 @@ class Mqtt {
         this.client = mqtt.connect(configuration.broker);
         this.topics = configuration.topics;
         this.mainTopic = configuration.topics.main;
+        this.adminTopic = this.mainTopic + this.topics.admin;
         this.messageHandler = messageHandler;
         this.connected = false;
 
@@ -14,6 +15,7 @@ class Mqtt {
             this.client.subscribe(this.mainTopic, (err) => {
                 if (!err) {
                     this.subscribeTopic(this.mainTopic);
+                    this.subscribeTopic(this.adminTopic);
                 }
             });
         });

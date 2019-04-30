@@ -8,6 +8,7 @@
     "scoreboard": "scoreboard",
     "serverLogs": "/log",
     "replicated": "/replicated",
-    "clients": "/clients/"
+    "clients": "/clients/",
+    "admin": "/admin"
   }
 }
