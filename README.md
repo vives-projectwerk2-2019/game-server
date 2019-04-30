@@ -37,3 +37,25 @@ to imitate a potential client you will have to send a message to `game/` in the 
 ```
 
 The movement input of the first packet will be ignored while the server is adding you as a new player.
+
+
+### configuring the environment variables
+
+To configure enviroment variables, replace or edit the .env file inside the root directory of the server. An example configuration could look like this:
+
+```
+#MQTT settings
+BROKER=mqtt://labict.be
+MAIN_TOPIC=game3
+PORT=1884
+
+#map settings
+WIDTH=22
+HEIGHT=17
+TILE_SIZE=40
+
+#game settings
+TURN_LENGTH=5
+HEARTBEAT=1000
+```
+Each of these values can be excluded from the file, the server will then fall back to a default value configured inside the files in the configuration directory.

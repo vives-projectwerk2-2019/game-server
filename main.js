@@ -9,10 +9,10 @@ const ClientUpdater = require(__lib + '/io/clientupdater.js');
 const Game = require(__lib + '/game/main/game.js');
 const fsManipulator = require(__lib + '/io/fsmanipulator.js');
 
-let mapConfiguration = fsManipulator.readJson('./configuration/mapconfiguration.json');
-let gameConfiguration = fsManipulator.readJson('./configuration/gameconfiguration.json');
-let mqttConfiguration = fsManipulator.readJson('./configuration/mqttconfiguration.json');
-let jsonMap = fsManipulator.readJson('./configuration/map.json');
+let mapConfiguration = require('./configuration/mapconfiguration.js');
+let gameConfiguration = require('./configuration/gameconfiguration.js');
+let mqttConfiguration = require('./configuration/mqttconfiguration.js');
+let jsonMap = require('./configuration/map.js');
 
 let broker = new Broker(mqttConfiguration.settings, () => {
     let mqtt = new Mqtt(mqttConfiguration, (topic, message) => userInputHandler.onUserInput(topic, message) );
