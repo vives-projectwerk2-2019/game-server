@@ -40,6 +40,7 @@ class Game {
   createTank(receivedMessage) {
     this.dataInput = receivedMessage;
     if (this.allTanks.length < 8) {
+      console.log("amount of tanks: " + this.allTanks.length);
       this.tankValues++;
       let tankName = this.dataInput.Player.username;
       let newTank = new Tank(
@@ -53,6 +54,9 @@ class Game {
       );
       this.allTanks.push(newTank);
       return newTank;
+    } else {
+      console.log("max amount of tanks");
+      return null;
     }
   }
 
@@ -86,9 +90,7 @@ class Game {
     this.playerList.players.forEach(player => {
       player.moved = false;
     });
-    this.client.mqtt.sendToScoreboard(
-      this.scoreboardJsonString(this.allTanks)
-    );
+    this.client.mqtt.sendToScoreboard(this.scoreboardJsonString(this.allTanks));
   }
 
   scoreboardJsonString(tanks) {

@@ -64,7 +64,7 @@ class UserInputHandler {
             const currentaddon = input.Controller.addons[index];
             for (let i = 0; i < this.addonhashes.length; i++) {
               const element = this.addonhashes[i];
-  
+
               if (currentaddon == element) {
                 input.Controller.addons[index] = this.addonNames[i];
               }
@@ -92,9 +92,9 @@ class UserInputHandler {
     }
   }
 
-  handleAdminInput(input){
+  handleAdminInput(input) {
     if (input.admin && input.command) {
-      if (input.command == "reset"){
+      if (input.command == "reset") {
         this.mqtt.log("restarting server");
         this.game.reset();
       }
@@ -142,15 +142,17 @@ class UserInputHandler {
     var name = input.Player.username;
     this.mqtt.log(name + " has connected !");
     //let spawnPosition = {"x": Math.floor(Math.random() * this.game.map.width), "y": Math.floor(Math.random() * this.game.map.length)};
-    this.game.playerList.addPlayer(name, this.game.createTank(input));
-    this.joinedPlayers.push(input.Player.username);
-    let player = this.game.playerList.getPlayer(input.Player.username);
-    this.game.animationEventList.add("spawnAnimation", player);
-    this.mqtt.setupClientConnection(name);
-    this.mqtt.sendToClient(
-      name,
-      JSON.stringify({ map: this.game.map.jsonMap })
-    );
+    if (this.joinedPlayers.length < 8) {
+      this.game.playerList.addPlayer(name, this.game.createTank(input));
+      this.joinedPlayers.push(input.Player.username);
+      let player = this.game.playerList.getPlayer(input.Player.username);
+      this.game.animationEventList.add("spawnAnimation", player);
+      this.mqtt.setupClientConnection(name);
+      this.mqtt.sendToClient(
+        name,
+        JSON.stringify({ map: this.game.map.jsonMap })
+      );
+    }
   }
 }
 
