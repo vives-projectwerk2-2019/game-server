@@ -52,7 +52,7 @@ class UserInputHandler {
   //special case: if the given player name does not exist yet, will create this new player and will ignore this new players movement input for that instance
   onUserInput(topic, message) {
     let input = this.parseJson(message);
-
+    console.log(input);
     if (input) {
       if (topic == this.mqtt.adminTopic) {
         this.handleAdminInput(input);

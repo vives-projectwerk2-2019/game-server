@@ -1,78 +1,96 @@
 /*jshint esversion: 6 */
 
-const mqtt = require('mqtt');
+const mqtt = require("mqtt");
 
 class Mqtt {
-    constructor(configuration, messageHandler) {
-        this.client = mqtt.connect(configuration.broker);
-        this.topics = configuration.topics;
-        this.mainTopic = configuration.topics.main;
-        this.adminTopic = this.mainTopic + this.topics.admin;
-        this.messageHandler = messageHandler;
-        this.connected = false;
+  constructor(configuration, messageHandler) {
+    this.client = mqtt.connect(configuration.broker);
+    this.apiClient = mqtt.connect(configuration.apiBroker);
+    this.topics = configuration.topics;
+    this.mainTopic = configuration.topics.main;
+    this.apiTopic = configuration.topics.api;
+    this.adminTopic = this.mainTopic + this.topics.admin;
+    this.messageHandler = messageHandler;
+    this.connected = false;
 
-        this.client.on('connect', () => {
-            this.client.subscribe(this.mainTopic, (err) => {
-                if (!err) {
-                    this.subscribeTopic(this.mainTopic);
-                    this.subscribeTopic(this.adminTopic);
-                }
-            });
-        });
-    
-        this.client.on('message', (topic, message) => {
-            // message is Buffer
-            this.messageHandler(topic, message.toString());
-        });
-    }
-
-    end () {
-        if (this.connected) {
-            client.end();
+    this.client.on("connect", () => {
+      this.client.subscribe(this.mainTopic, err => {
+        if (!err) {
+          this.subscribeTopic(this.mainTopic);
+          this.subscribeTopic(this.adminTopic);
         }
-    }
+      });
+    });
+    this.apiClient.on("connect", () => {
+      this.apiClient.subscribe(this.apiTopic, err => {
+        if (!err) {
+          this.subscribeTopic(this.apiTopic);
+          console.log(
+            "connected to Broker: " +
+              configuration.apiBroker +
+              " topic: " +
+              this.apiTopic
+          );
+        }
+      });
+    });
+    // this.client.on("message", (topic, message) => {
+    //   // message is Buffer
+    //   this.messageHandler(topic, message.toString());
+    // });
+    this.apiClient.on("message", (apiTopic, message) => {
+      // message is Buffer
+      //console.log(message.toString());
+      this.messageHandler(apiTopic, message.toString());
+    });
+  }
 
-    subscribeTopic (topicName) {
-        this.client.subscribe(topicName, (err) => {
-            if(!err){
-                this.send(topicName, 'The server is listening to ' + topicName);
-            }
-        });
+  end() {
+    if (this.connected) {
+      client.end();
     }
+  }
 
-    unsubscribeTopic (topicName) {
-        this.client.unsubscribe(topicName, (err) => {
-            if(!err){
-                this.send(topicName, 'topic' + topicName + 'was removed');
-            }
-        });
-    }
+  subscribeTopic(topicName) {
+    this.client.subscribe(topicName, err => {
+      if (!err) {
+        this.send(topicName, "The server is listening to " + topicName);
+      }
+    });
+  }
 
-    setupClientConnection(clientName) {
-        this.subscribeTopic(this.mainTopic + this.topics.clients + clientName);
-        this.log("established private connection with " + clientName);
-    }
+  unsubscribeTopic(topicName) {
+    this.client.unsubscribe(topicName, err => {
+      if (!err) {
+        this.send(topicName, "topic" + topicName + "was removed");
+      }
+    });
+  }
 
-    send (topicName, message) {
-        this.client.publish(topicName, message);
-    }
+  setupClientConnection(clientName) {
+    this.subscribeTopic(this.mainTopic + this.topics.clients + clientName);
+    this.log("established private connection with " + clientName);
+  }
 
-    log (message) {
-        this.send(this.mainTopic + this.topics.serverLogs, message);
-    }
+  send(topicName, message) {
+    this.client.publish(topicName, message);
+  }
 
-    replicate (message) {
-        this.send(this.mainTopic + this.topics.replicated, message);
-    }
+  log(message) {
+    this.send(this.mainTopic + this.topics.serverLogs, message);
+  }
 
-    sendToClient(clientName, message) {
-        this.send(this.mainTopic + this.topics.clients + clientName, message);
-    }
+  replicate(message) {
+    this.send(this.mainTopic + this.topics.replicated, message);
+  }
 
-    sendToScoreboard(jsonString) {
-        this.send(this.topics.scoreboard, jsonString);
-    }
+  sendToClient(clientName, message) {
+    this.send(this.mainTopic + this.topics.clients + clientName, message);
+  }
 
+  sendToScoreboard(jsonString) {
+    this.send(this.topics.scoreboard, jsonString);
+  }
 }
 
 module.exports = Mqtt;
