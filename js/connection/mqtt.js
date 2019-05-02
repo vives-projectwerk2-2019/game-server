@@ -39,11 +39,13 @@ class Mqtt {
     //   // message is Buffer
     //   this.messageHandler(topic, message.toString());
     // });
-    this.client.on("message", (apiTopic, message) => {
-      this.messageGameHandler(apiTopic, message.toString());
+    this.client.on("message", (topic, message) => {
+        console.log(`[Broker] received message (topic: ${topic})`);
+        this.messageGameHandler(topic, message.toString());
     });
-    this.apiClient.on("message", (mainTopic, message) => {
-      this.messageApiHandler(mainTopic, message.toString());
+    this.apiClient.on("message", (topic, message) => {
+        console.log(`[API] received message (topic: ${topic})`);
+        this.messageApiHandler(topic, message.toString());
     });
   }
 
@@ -79,6 +81,7 @@ class Mqtt {
   }
 
   log(message) {
+    console.log(`[LOG] ${message}`);
     this.send(this.mainTopic + this.topics.serverLogs, message);
   }
 
