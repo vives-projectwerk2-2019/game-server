@@ -52,8 +52,8 @@ class UserInputHandler {
   //special case: if the given player name does not exist yet, will create this new player and will ignore this new players movement input for that instance
   onUserGameInput(topic, message) {
     let input = this.parseJson(message);
-    console.log("received message on game");
-    console.log(input);
+    console.log(`[Broker] received message (topic: ${topic})`);
+    // console.log(input);
     if (input) {
       if (topic == this.mqtt.adminTopic) {
         this.handleAdminInput(input);
@@ -65,8 +65,9 @@ class UserInputHandler {
 
   onUserApiInput(topic, message) {
     let input = this.parseJson(message);
-    console.log("received message on api");
-    console.log(input);
+    console.log(`[API] received message (topic: ${topic})`);
+    // console.log("received message on api");
+    // console.log(input);
     if (input) {
       if (input.Player) {
         //console.log(input);
@@ -112,6 +113,7 @@ class UserInputHandler {
   }
 
   handlePlayerInput(player, input) {
+    // console.log(player, input)
     if (
       player.tank[input.Player.movement] &&
       typeof player.tank[input.Player.movement] == "function"
@@ -137,7 +139,7 @@ class UserInputHandler {
       this.mqtt.log("this movement type is invalid");
     }
     let returnData = player.tank.tankAction(input, this.game.allTanks);
-    console.log(returnData);
+    console.log("Return data: ", returnData);
     if (returnData != null) {
       this.game.animationEventList.addAction(
         returnData.firedWeapon,
