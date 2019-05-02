@@ -76,9 +76,9 @@ class Mqtt {
     this.log("established private connection with " + clientName);
   }
 
-  send(topic, message) {
+  send(topic, message, options = {}) {
     console.log(`[Broker] publishing on topic: ${topic}`);
-    this.client.publish(topic, message.toString());
+    this.client.publish(topic, message.toString(), options);
   }
 
   log(message) {
@@ -87,7 +87,7 @@ class Mqtt {
   }
 
   replicate(message) {
-    this.send(this.mainTopic + this.topics.replicated, message);
+    this.send(this.mainTopic + this.topics.replicated, message, {retain: true});
   }
 
   sendToClient(clientName, message) {
