@@ -4,7 +4,7 @@ class HexMover {
   constructor(map, x, y) {
     this.map = map;
     this.currentTile = this.map.getTile({ x: x, y: y });
-    this.previousRotation = currentPosition;
+    this.previousRotation = this.currentPosition;
     this.currentPosition = this.updateCurrentPosition();
     this.currentRotation = 1;
     this.weapons = {
