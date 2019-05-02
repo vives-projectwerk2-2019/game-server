@@ -254,19 +254,6 @@ class Tank extends HexMover {
     damageTaker.health = damageTaker.health - wepDamage;
     console.log(damageTaker.health);
 
-    // for (let i = 0; i < damageDealer.weapons.weaponName.length; i++) {
-    //   console.log(damageDealer.weapons.weaponName);
-    //   if (
-    //     weapon == damageDealer.weapons.weaponName[i] &&
-    //     damageDealer.addonUses[i] < 1
-    //   ) {
-    //     damageTaker.health =
-    //       damageTaker.health - damageDealer.weapons.weaponDamage[i];
-    //     console.log(damageTaker.health);
-    //     if (damageDealer.weapons.weaponName[i] != "gatling gun") {
-    //       damageDealer.addonUses[i]++;
-    //     }
-    //   }
     if (damageTaker.health <= 0) {
       console.log(damageTaker.username + " tank died");
       damageTaker = null;
@@ -278,6 +265,7 @@ class Tank extends HexMover {
     return {
       color: this.color,
       addons: this.addons,
+      previousRotation: this.previousRotation,
       rotation: this.currentRotation,
       position: { x: this.currentPosition.x, y: this.currentPosition.y },
       health: this.health
