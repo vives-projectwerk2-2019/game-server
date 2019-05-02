@@ -50,41 +50,51 @@ class UserInputHandler {
 
   //expects a string topic and a json string message, will determine what to update in the game state with the given input
   //special case: if the given player name does not exist yet, will create this new player and will ignore this new players movement input for that instance
-  onUserInput(topic, message) {
+  onUserGameInput(topic, message) {
     let input = this.parseJson(message);
+    console.log("received message on game");
     console.log(input);
     if (input) {
       if (topic == this.mqtt.adminTopic) {
         this.handleAdminInput(input);
-      } else {
-        if (input.Player) {
-          //console.log(input);
-          let player = this.game.playerList.getPlayer(input.Player.username);
-          for (let index = 0; index < input.Controller.addons.length; index++) {
-            const currentaddon = input.Controller.addons[index];
-            for (let i = 0; i < this.addonhashes.length; i++) {
-              const element = this.addonhashes[i];
+      }
+    } else if (topic == this.mqtt.topics.replicated) {
+      this.mqtt.log("the given input was invalid");
+    }
+  }
 
-              if (currentaddon == element) {
-                input.Controller.addons[index] = this.addonNames[i];
-              }
+  onUserApiInput(topic, message) {
+    let input = this.parseJson(message);
+    console.log("received message on api");
+    console.log(input);
+    if (input) {
+      if (input.Player) {
+        //console.log(input);
+        let player = this.game.playerList.getPlayer(input.Player.username);
+        for (let index = 0; index < input.Controller.addons.length; index++) {
+          const currentaddon = input.Controller.addons[index];
+          for (let i = 0; i < this.addonhashes.length; i++) {
+            const element = this.addonhashes[i];
+
+            if (currentaddon == element) {
+              input.Controller.addons[index] = this.addonNames[i];
             }
           }
-          if (this.joinedPlayers.includes(input.Player.username)) {
-            if (player) {
-              this.handlePlayerInput(player, input);
-            } else {
-              this.mqtt.log("the player " + input.Player + " does not exist");
-            }
-          } else if (!player) {
-            this.onNewPlayerConnected(input);
+        }
+        if (this.joinedPlayers.includes(input.Player.username)) {
+          if (player) {
+            this.handlePlayerInput(player, input);
           } else {
-            this.mqtt.log(
-              "a new player " +
-                input.Player.username +
-                " wants to connect, but his name is already in use"
-            );
+            this.mqtt.log("the player " + input.Player + " does not exist");
           }
+        } else if (!player) {
+          this.onNewPlayerConnected(input);
+        } else {
+          this.mqtt.log(
+            "a new player " +
+              input.Player.username +
+              " wants to connect, but his name is already in use"
+          );
         }
       }
     } else if (topic == this.mqtt.topics.replicated) {

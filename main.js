@@ -15,7 +15,11 @@ let mqttConfiguration = require('./configuration/mqttconfiguration.js');
 let jsonMap = require('./configuration/map.js');
 
 let broker = new Broker(mqttConfiguration.settings, () => {
-    let mqtt = new Mqtt(mqttConfiguration, (topic, message) => userInputHandler.onUserInput(topic, message) );
+    let mqtt = new Mqtt(
+        mqttConfiguration, 
+        (topic, message) => userInputHandler.onUserApiInput(topic, message),
+        (topic, message) => userInputHandler.onUserGameInput(topic, message)
+    );
     let client = new ClientUpdater(mqtt);
     let game = new Game(gameConfiguration, mapConfiguration, jsonMap, client);
     let userInputHandler = new UserInputHandler(game, mqtt);

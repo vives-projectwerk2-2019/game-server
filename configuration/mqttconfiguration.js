@@ -8,8 +8,8 @@ module.exports = {
   broker: process.env.BROKER || "wss://game.bug.labict.be/broker",
   apiBroker: "wss://api.bug.labict.be/broker",
   topics: {
-    main: process.env.MAIN_TOPIC || "game5",
-    api: "game",
+    main: process.env.MAIN_TOPIC || "game64",
+    api: "game64",
     scoreboard: "scoreboard",
     serverLogs: "/log",
     replicated: "/replicated",

@@ -3,14 +3,15 @@
 const mqtt = require("mqtt");
 
 class Mqtt {
-  constructor(configuration, messageHandler) {
+  constructor(configuration, messageApiHandler, messageGameHandler) {
     this.client = mqtt.connect(configuration.broker);
     this.apiClient = mqtt.connect(configuration.apiBroker);
     this.topics = configuration.topics;
     this.mainTopic = configuration.topics.main;
     this.apiTopic = configuration.topics.api;
     this.adminTopic = this.mainTopic + this.topics.admin;
-    this.messageHandler = messageHandler;
+    this.messageApiHandler = messageApiHandler;
+    this.messageGameHandler = messageGameHandler;
     this.connected = false;
 
     this.client.on("connect", () => {
@@ -38,10 +39,11 @@ class Mqtt {
     //   // message is Buffer
     //   this.messageHandler(topic, message.toString());
     // });
-    this.apiClient.on("message", (apiTopic, message) => {
-      // message is Buffer
-      //console.log(message.toString());
-      this.messageHandler(apiTopic, message.toString());
+    this.client.on("message", (apiTopic, message) => {
+      this.messageGameHandler(apiTopic, message.toString());
+    });
+    this.apiClient.on("message", (mainTopic, message) => {
+      this.messageApiHandler(mainTopic, message.toString());
     });
   }
 
