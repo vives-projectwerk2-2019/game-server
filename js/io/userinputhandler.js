@@ -125,6 +125,7 @@ class UserInputHandler {
             " wants his tank to move to the " +
             input.Player.movement
         );
+        console.log(player.tank.currentPosition, " ", player.tank.currentRotation);
         player.tank[input.Player.movement]();
         this.game.animationEventList.add(
           input.Player.movement,
