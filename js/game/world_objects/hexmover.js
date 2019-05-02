@@ -1,10 +1,10 @@
 /*jshint esversion: 6 */
+const TankTerrain = require(__lib + "/game/map/terrain.js");
 
 class HexMover {
   constructor(map, x, y) {
     this.map = map;
     this.currentTile = this.map.getTile({ x: x, y: y });
-    this.previousRotation = currentPosition;
     this.currentPosition = this.updateCurrentPosition();
     this.currentRotation = 1;
     this.weapons = {
@@ -67,8 +67,13 @@ class HexMover {
         z: this.currentTile.cubePosition.z - 1
       };
     }
-    let newPosition = this.map.cubeToOddr(newCubeLocation);
-    this.setPosition(newPosition.x, newPosition.y);
+/*
+    let nextTile = TankTerrain.getNextTileType(this.map.cubeToOddr(newCubeLocation), this.map.jsonMap);
+    let tankPath = TankTerrain.setTankPathState(nextTile);
+    if(tankPath == tankPathEnum.UNBLOCKED) { */
+        let newPosition = this.map.cubeToOddr(newCubeLocation);
+        this.setPosition(newPosition.x, newPosition.y);
+/*  }	*/
   }
 
   backward() {
@@ -117,8 +122,13 @@ class HexMover {
         z: this.currentTile.cubePosition.z + 1
       };
     }
-    let newPosition = this.map.cubeToOddr(newCubeLocation);
-    this.setPosition(newPosition.x, newPosition.y);
+/*
+    let nextTile = TankTerrain.getNextTileType(this.map.cubeToOddr(newCubeLocation), this.map.jsonMap);
+    let tankPath = TankTerrain.setTankPathState(nextTile);
+    if(tankPath == tankPathEnum.UNBLOCKED) { */
+        let newPosition = this.map.cubeToOddr(newCubeLocation);
+        this.setPosition(newPosition.x, newPosition.y);
+/*  }	*/
   }
 
   left() {
