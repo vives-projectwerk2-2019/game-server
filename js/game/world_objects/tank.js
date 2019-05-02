@@ -58,16 +58,16 @@ class Tank extends HexMover {
     let dataInput = receivedMessage;
     let damageDealer = this.getCurrentTank(dataInput, allTanks);
     let i;
-    switch (dataInput.Player.action) {
+    let result;
+    const action = dataInput.Player.action.toUpperCase();
+    console.log(action);
+    switch (action) {
       case "A":
-        console.log("A");
-        return this.dealDamage(damageDealer, "gatling gun", allTanks);
+        result =  this.dealDamage(damageDealer, "gatling gun", allTanks);
         break;
       case "B":
         i = 1;
-        console.log("B");
-
-        return this.useAddon(
+        result = this.useAddon(
           this.addons.addonName[i],
           i,
           damageDealer,
@@ -76,9 +76,7 @@ class Tank extends HexMover {
         break;
       case "X":
         i = 2;
-        console.log("X");
-
-        return this.useAddon(
+        result = this.useAddon(
           this.addons.addonName[i],
           i,
           damageDealer,
@@ -87,8 +85,7 @@ class Tank extends HexMover {
         break;
       case "Y":
         i = 3;
-        console.log("Y");
-        return this.useAddon(
+        result = this.useAddon(
           this.addons.addonName[i],
           i,
           damageDealer,
@@ -96,9 +93,10 @@ class Tank extends HexMover {
         );
         break;
       default:
-        //console.log("no key pressed");
+        console.log("no key pressed");
         break;
     }
+    return result;
   }
 
   useConsumable(name, i) {
