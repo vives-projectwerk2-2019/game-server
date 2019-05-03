@@ -4,20 +4,20 @@ const mqtt = require("mqtt");
 
 class Mqtt {
   constructor(configuration, messageApiHandler, messageGameHandler) {
-    this.client = mqtt.connect(configuration.broker);
+    this.client = mqtt.connect(configuration.gameBroker);
     this.apiClient = mqtt.connect(configuration.apiBroker);
     this.topics = configuration.topics;
-    this.mainTopic = configuration.topics.main;
+    this.gameTopic = configuration.topics.game;
     this.apiTopic = configuration.topics.api;
-    this.adminTopic = this.mainTopic + this.topics.admin;
+    this.adminTopic = this.gameTopic + this.topics.admin;
     this.messageApiHandler = messageApiHandler;
     this.messageGameHandler = messageGameHandler;
     this.connected = false;
 
     this.client.on("connect", () => {
-      this.client.subscribe(this.mainTopic, err => {
+      this.client.subscribe(this.gameTopic, err => {
         if (!err) {
-          this.subscribeTopic(this.mainTopic);
+          this.subscribeTopic(this.gameTopic);
           this.subscribeTopic(this.adminTopic);
         }
       });
@@ -72,7 +72,7 @@ class Mqtt {
   }
 
   setupClientConnection(clientName) {
-    this.subscribeTopic(this.mainTopic + this.topics.clients + clientName);
+    this.subscribeTopic(this.gameTopic + this.topics.clients + clientName);
     this.log("established private connection with " + clientName);
   }
 
@@ -83,15 +83,15 @@ class Mqtt {
 
   log(message) {
     console.log(`[LOG] ${message}`);
-    this.send(this.mainTopic + this.topics.serverLogs, message);
+    this.send(this.gameTopic + this.topics.serverLogs, message);
   }
 
   replicate(message) {
-    this.send(this.mainTopic + this.topics.replicated, message, {retain: true});
+    this.send(this.gameTopic + this.topics.replicated, message, {retain: true});
   }
 
   sendToClient(clientName, message) {
-    this.send(this.mainTopic + this.topics.clients + clientName, message);
+    this.send(this.gameTopic + this.topics.clients + clientName, message);
   }
 
   sendToScoreboard(jsonString) {
