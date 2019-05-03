@@ -44,9 +44,14 @@ The movement input of the first packet will be ignored while the server is addin
 To configure enviroment variables, place a .env file inside the root directory of the server. An example configuration could look like this:
 ```
 #MQTT settings
-BROKER=mqtt://labict.be
-MAIN_TOPIC=game3
-PORT=1884
+GAME_BROKER=wss://game.bug.labict.be/broker
+GAME_TOPIC=game64
+
+API_BROKER=wss://api.bug.labict.be/broker
+API_TOPIC=game64
+
+#Local backup broker port
+PORT=443
 
 #map settings
 WIDTH=22
