@@ -79,6 +79,8 @@ class UserInputHandler {
 
             if (currentaddon == element) {
               input.Controller.addons[index] = this.addonNames[i];
+            } else if (currentaddon) {
+              input.Controller.addons[index] = "gatling gun";
             }
           }
         }
@@ -115,39 +117,41 @@ class UserInputHandler {
 
   handlePlayerInput(player, input) {
     // console.log(player, input)
-    if (
-      player.tank[input.Player.movement] &&
-      typeof player.tank[input.Player.movement] == "function"
-    ) {
-      if (!player.moved) {
-        this.game.client.mqtt.log(
-          "the player " +
-            player.name +
-            " wants his tank to move to the " +
-            input.Player.movement
-        );
-        console.log(player.tank.currentPosition, " ", player.tank.currentRotation);
-        player.tank[input.Player.movement]();
-        this.game.animationEventList.add(
-          input.Player.movement,
-          player,
-          player.tank.currentTile
-        );
-        player.moved = true;
+    if (!player.tank.died){
+      if (
+        player.tank[input.Player.movement] &&
+        typeof player.tank[input.Player.movement] == "function"
+      ) {
+        if (!player.moved) {
+          this.game.client.mqtt.log(
+            "the player " +
+              player.name +
+              " wants his tank to move to the " +
+              input.Player.movement
+          );
+          console.log(player.tank.currentPosition, " ", player.tank.currentRotation);
+          player.tank[input.Player.movement]();
+          this.game.animationEventList.add(
+            input.Player.movement,
+            player,
+            player.tank.currentTile
+          );
+          player.moved = true;
+        } else {
+          this.mqtt.log(player.name + " is trying to move again !");
+        }
       } else {
-        this.mqtt.log(player.name + " is trying to move again !");
+        this.mqtt.log("this movement type is invalid");
       }
-    } else {
-      this.mqtt.log("this movement type is invalid");
-    }
-    let returnData = player.tank.tankAction(input, this.game.allTanks);
-    console.log("Return data: ", returnData);
-    if (returnData != null) {
-      this.game.animationEventList.addAction(
-        returnData.firedWeapon,
-        returnData.damageDealer,
-        returnData.damageTaker
-      );
+      let returnData = player.tank.tankAction(input, this.game.allTanks);
+      console.log("Return data: ", returnData);
+      if (returnData != null) {
+        this.game.animationEventList.addAction(
+          returnData.firedWeapon,
+          returnData.damageDealer,
+          returnData.damageTaker
+        );
+      }
     }
   }
 

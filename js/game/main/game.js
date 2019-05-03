@@ -63,6 +63,11 @@ class Game {
   //resets the game by deleting all players, deleting all animation events and restarting the turns
   reset() {
     this.allTanks = [];
+    this.count = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTilesOccupiedX = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTilesOccupiedY = [0, 0, 0, 0, 0, 0, 0, 0];
+    this.spawnTiles = [];
+    this.tankValues = 0;
     this.setSpawnTiles();
     this.playerList.clear();
     this.animationEventList.clear();
@@ -81,7 +86,6 @@ class Game {
   }
 
   onTurnEnd() {
-    console.log(this.playerList);
     this.client.update(
       JSON.stringify({
         turn: this.turnHandler.turn,

@@ -10,6 +10,7 @@ class Tank extends HexMover {
     };
     this.setAddons(addons);
     this.username = username;
+    this.died = false;
     this.allWeapons = {
       // base weapon always equiped
       weaponName: ["gatling gun"],
@@ -31,10 +32,13 @@ class Tank extends HexMover {
   addTankArmor(toAddArmor) {
     this.armor = this.armor + toAddArmor;
   }
+
   setAddons(addons) {
     for (let index = 0; index < addons.length; index++) {
       const name = addons[index];
-      this.addons.addonName.push(name);
+      if (name) {
+        this.addons.addonName.push(name);
+      }
     }
   }
   addWeapon(name, damage, range, uses) {
@@ -299,7 +303,8 @@ class Tank extends HexMover {
 
     if (damageTaker.health <= 0) {
       console.log(damageTaker.username + " tank died");
-      damageTaker = null;
+      //damageTaker = null;
+      damageTaker.died = true;
     }
     return { firedWeapon, damageDealer, damageTaker };
     // }
@@ -312,6 +317,7 @@ class Tank extends HexMover {
       previousRotation: this.previousRotation,
       rotation: this.currentRotation,
       position: { x: this.currentPosition.x, y: this.currentPosition.y },
+      died: this.died,
       health: this.health
     };
   }
