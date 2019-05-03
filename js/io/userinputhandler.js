@@ -107,6 +107,7 @@ class UserInputHandler {
     if (input.admin && input.command) {
       if (input.command == "reset") {
         this.mqtt.log("restarting server");
+        this.joinedPlayers = [];
         this.game.reset();
       }
     }
