@@ -63,6 +63,10 @@ class Tank extends HexMover {
     let damageDealer = this.getCurrentTank(dataInput, allTanks);
     let i;
     let result;
+    if (dataInput.Player.action === undefined) { 
+      console.log("dataInput.Player.action is undefined !!!")  
+      return undefined; 
+    }
     const action = dataInput.Player.action.toUpperCase();
     console.log(action);
     switch (action) {
